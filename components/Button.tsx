@@ -5,6 +5,11 @@ import styles from '@components/Button.module.css';
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
+/**
+ * Button - Interactive clickable element
+ * @description Primary action element with theme variants (PRIMARY, SECONDARY) and disabled state
+ * @example <Button theme="PRIMARY" onClick={handleClick}>Click Me</Button>
+ */
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   theme?: 'PRIMARY' | 'SECONDARY';
   isDisabled?: boolean;

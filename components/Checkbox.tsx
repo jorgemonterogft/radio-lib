@@ -4,6 +4,11 @@ import styles from '@components/Checkbox.module.css';
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
+/**
+ * Checkbox - Input control for boolean selection
+ * @description Toggle-able checkbox with label, supports checked and disabled states
+ * @example <Checkbox name="agree" onChange={handleChange}>I agree</Checkbox>
+ */
 interface CheckboxProps {
   style?: React.CSSProperties;
   checkboxStyle?: React.CSSProperties;

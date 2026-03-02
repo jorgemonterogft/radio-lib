@@ -2,6 +2,11 @@ import styles from '@components/BreadCrumbs.module.css';
 
 import * as React from 'react';
 
+/**
+ * BreadCrumbs - Navigation breadcrumb trail
+ * @description Shows current location in navigation hierarchy, enables back navigation
+ * @example <BreadCrumbs items={[{name:'Home',url:'/'},{name:'Blog',url:'/blog'},{name:'Article'}]} />
+ */
 interface BreadCrumbsItem {
   url?: string;
   name: string;

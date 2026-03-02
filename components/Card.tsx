@@ -3,6 +3,11 @@ import styles from '@components/Card.module.css';
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
+/**
+ * Card - Container for grouped content
+ * @description Display-focused container with title and content sections, used for organizing UI blocks
+ * @example <Card title="Blog">Post content here</Card>
+ */
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   title?: string | any;

@@ -2,6 +2,11 @@ import styles from '@components/Divider.module.css';
 
 import * as React from 'react';
 
+/**
+ * Divider - Visual separator between content sections
+ * @description Horizontal line element for separating distinct content areas
+ * @example <Divider />
+ */
 interface DividerProps extends React.HTMLAttributes<HTMLSpanElement> {
   children?: React.ReactNode;
   type?: string | any;

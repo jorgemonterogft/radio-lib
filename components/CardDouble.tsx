@@ -3,6 +3,11 @@ import styles from '@components/CardDouble.module.css';
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
+/**
+ * CardDouble - Two-column card layout
+ * @description Display paired content side by side in a card container, useful for detail views
+ * @example <CardDouble left={<div>Left</div>} right={<div>Right</div>} />
+ */
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   title?: string | any;

@@ -4,8 +4,11 @@
 }
 
 .label {
-  background: var(--theme-border);
   display: block;
+  font-size: var(--font-size-small, 10px);
+  padding: 4px 0px;
+  text-transform: uppercase;
+  color: var(--theme-text-subdued, #888);
 }
 
 .placeholder {
@@ -24,10 +27,6 @@
 
 .focused {
   .block {
-    background: var(--theme-focused-foreground);
-  }
-
-  .placeholder {
     background: var(--theme-focused-foreground);
   }
 }
@@ -65,13 +64,17 @@
   background: transparent;
   caret-color: transparent;
   border: none;
-  outline: none;
+  outline: none !important;
   overflow: hidden;
   padding: 0;
   margin: 0;
   line-height: var(--theme-line-height-base);
   font-size: var(--font-size);
   font-family: inherit;
+
+  &::placeholder {
+    color: transparent !important;
+  }
 
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px var(--theme-focused-foreground) inset;

@@ -3,6 +3,11 @@ import styles from '@components/Avatar.module.css';
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
+/**
+ * Avatar - Display user or entity profile images
+ * @description Profile pictures, author images, user identification with optional text content
+ * @example <Avatar src="/profile.jpg"><Indent>John Doe</Indent></Avatar>
+ */
 interface AvatarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style' | 'className' | 'children'> {
   src?: string;
   href?: string;

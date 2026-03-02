@@ -4,6 +4,11 @@ import * as React from 'react';
 
 import styles from '@components/BarLoader.module.css';
 
+/**
+ * BarLoader - Animated loading indicator
+ * @description Shows loading state while fetching data or processing with animated bar
+ * @example {loading && <BarLoader />}
+ */
 interface BarLoaderProps {
   intervalRate?: number;
   progress?: number;

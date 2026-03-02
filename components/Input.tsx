@@ -5,13 +5,18 @@ import * as Utilities from '@common/utilities';
 
 import styles from '@components/Input.module.css';
 
+/**
+ * Input - Text input field with terminal styling
+ * @description Custom text input with blinking caret animation and label support
+ * @example <Input label="Username" placeholder="Enter name" />
+ */
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   caretChars?: string | any;
   label?: string | any;
   isBlink?: boolean;
 };
 
-function Input({ caretChars, isBlink = true, label, placeholder, onChange, type, id, ...rest }: InputProps) {
+function Input({ caretChars, isBlink = true, label, placeholder, onChange, type, id, className, ...rest }: InputProps) {
   const generatedId = React.useId();
   const inputId = id || generatedId;
 
@@ -82,7 +87,7 @@ function Input({ caretChars, isBlink = true, label, placeholder, onChange, type,
   };
 
   const isPlaceholderVisible = !text && placeholder;
-  const containerClasses = Utilities.classNames(styles.root, isFocused && styles.focused);
+  const containerClasses = Utilities.classNames(styles.root, className, isFocused && styles.focused);
 
   const maskText = (t: string) => (type === 'password' ? '•'.repeat(t.length) : t);
 
@@ -99,10 +104,25 @@ function Input({ caretChars, isBlink = true, label, placeholder, onChange, type,
       <div className={styles.inputContainer}>
         <div className={Utilities.classNames(styles.displayed, isPlaceholderVisible && styles.placeholder)}>
           {beforeCaretText}
-          {!isPlaceholderVisible && <span className={Utilities.classNames(styles.block, isBlink && styles.blink)}>{caretChars || ''}</span>}
-          {!isPlaceholderVisible && afterCaretText}
+          <span className={Utilities.classNames(styles.block, isBlink && styles.blink)}>
+            {isPlaceholderVisible ? '' : (afterCaretText.charAt(0) || caretChars || ' ')}
+          </span>
+          {!isPlaceholderVisible && afterCaretText.substring(1)}
         </div>
-        <input id={inputId} ref={inputRef} className={styles.hidden} value={text} aria-placeholder={placeholder} type={type} onFocus={onHandleFocus} onBlur={onHandleBlur} onChange={onHandleChange} onSelect={onHandleSelect} onClick={onHandleClick} onKeyDown={onHandleKeyDown} {...rest} />
+        <input
+          {...rest}
+          ref={inputRef}
+          type={type}
+          id={inputId}
+          className={styles.hidden}
+          onFocus={onHandleFocus}
+          onBlur={onHandleBlur}
+          onChange={onHandleChange}
+          onSelect={onHandleSelect}
+          onClick={onHandleClick}
+          onKeyDown={onHandleKeyDown}
+          autoComplete="off"
+        />
       </div>
     </div>
   );
