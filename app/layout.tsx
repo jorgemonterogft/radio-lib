@@ -2,10 +2,12 @@ import '@root/global.css';
 import '@root/global-fonts.css';
 
 import Providers from '@components/Providers';
+import Header from '@components/Header';
+import Footer from '@components/Footer';
 
 export const metadata = {
-  title: 'Sacred Blog',
-  description: 'A blog built with Next.js and React',
+  title: 'Radio',
+  description: 'Radio - A blog about technology',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -16,7 +18,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className="theme-light">
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          <main style={{ minHeight: 'calc(100vh - 200px)' }}>
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
