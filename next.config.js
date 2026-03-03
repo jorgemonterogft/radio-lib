@@ -1,6 +1,6 @@
 const nextConfig = {
   devIndicators: false,
-  output: 'export',
+  output: 'standalone',
   basePath: '',
   trailingSlash: true,
   images: {
