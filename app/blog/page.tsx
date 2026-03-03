@@ -1,10 +1,8 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+import { readdirSync, readFileSync } from 'fs';
+import { join } from 'path';
 import Card from '@/components/Card';
 import BlogPostCard from '@/components/BlogPostCard';
-import BarLoader from '@/components/BarLoader';
-import AlertBanner from '@/components/AlertBanner';
+import matter from 'gray-matter';
 
 interface BlogPost {
   id: string;
@@ -17,46 +15,59 @@ interface BlogPost {
   cover_image?: string;
 }
 
+export const dynamic = 'force-static';
+
+function getBlogPosts(): BlogPost[] {
+  const postsDirectory = join(process.cwd(), 'content', 'blog');
+  const posts: BlogPost[] = [];
+
+  try {
+    const categories = readdirSync(postsDirectory);
+
+    categories.forEach((category) => {
+      const categoryPath = join(postsDirectory, category);
+      const files = readdirSync(categoryPath).filter(file => file.endsWith('.md'));
+
+      files.forEach((file) => {
+        const filePath = join(categoryPath, file);
+        const fileContent = readFileSync(filePath, 'utf-8');
+        const { data } = matter(fileContent);
+        const slug = file.replace('.md', '');
+
+        posts.push({
+          id: slug,
+          title: data.title || 'Untitled',
+          slug: slug,
+          excerpt: data.excerpt || '',
+          author: data.author || 'Anonymous',
+          created_at: data.date || new Date().toISOString(),
+          tags: data.tags || [],
+          cover_image: data.cover_image || '',
+        });
+      });
+    });
+
+    return posts.sort((a, b) => 
+      new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime()
+    );
+  } catch (error) {
+    console.error('Error reading blog posts:', error);
+    return [];
+  }
+}
+
 export default function BlogPage() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch('/api/blog/posts', { cache: 'no-store' });
-        const data = await response.json();
-
-        if (!response.ok) {
-          setError(data.error || 'Failed to fetch posts');
-          return;
-        }
-
-        setPosts(data.posts);
-      } catch (err) {
-        setError('An error occurred while fetching posts');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  const posts = getBlogPosts();
 
   return (
     <Card title="BLOG">
-        {loading && <BarLoader />}
-        {error && <AlertBanner>{error}</AlertBanner>}
-
-        {!loading && !error && posts.length === 0 && (
-          <AlertBanner>
-            No posts found. Configure database to see posts here.
-          </AlertBanner>
+        {posts.length === 0 && (
+          <div style={{ padding: '1rem' }}>
+            No posts found.
+          </div>
         )}
 
-        {!loading && !error && posts.length > 0 &&
+        {posts.length > 0 &&
           posts.map((post) => (
             <BlogPostCard key={post.id} {...post} />
           ))
@@ -64,3 +75,4 @@ export default function BlogPage() {
     </Card>
   );
 }
+

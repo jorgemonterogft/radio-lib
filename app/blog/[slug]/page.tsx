@@ -1,96 +1,96 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+import { readdirSync, readFileSync } from 'fs';
+import { join } from 'path';
 import Link from 'next/link';
+import matter from 'gray-matter';
 import Card from '@/components/Card';
-import BarLoader from '@/components/BarLoader';
 import AlertBanner from '@/components/AlertBanner';
 import BlogPost from '@/components/BlogPost';
 import styles from './post.module.css';
 
-interface BlogPost {
-  id: string;
+interface BlogPostData {
   title: string;
   slug: string;
   content: string;
   excerpt?: string;
   author?: string;
-  created_at?: string;
-  updated_at?: string;
+  date?: string;
   tags?: string[];
   cover_image?: string;
+}
+
+export const dynamic = 'force-static';
+
+export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
+  const postsDirectory = join(process.cwd(), 'content', 'blog');
+  const params: Array<{ slug: string }> = [];
+
+  try {
+    const categories = readdirSync(postsDirectory);
+
+    categories.forEach((category) => {
+      const categoryPath = join(postsDirectory, category);
+      const files = readdirSync(categoryPath).filter(file => file.endsWith('.md'));
+
+      files.forEach((file) => {
+        const slug = file.replace('.md', '');
+        params.push({ slug });
+      });
+    });
+  } catch (error) {
+    console.error('Error reading blog posts:', error);
+  }
+
+  return params;
+}
+
+function getBlogPost(slug: string): BlogPostData | null {
+  const postsDirectory = join(process.cwd(), 'content', 'blog');
+
+  try {
+    const categories = readdirSync(postsDirectory);
+
+    for (const category of categories) {
+      const categoryPath = join(postsDirectory, category);
+      const filePath = join(categoryPath, `${slug}.md`);
+
+      try {
+        const fileContent = readFileSync(filePath, 'utf-8');
+        const { data, content } = matter(fileContent);
+
+        return {
+          title: data.title || 'Untitled',
+          slug: slug,
+          content: content,
+          excerpt: data.excerpt || '',
+          author: data.author || 'Anonymous',
+          date: data.date || new Date().toISOString(),
+          tags: data.tags || [],
+          cover_image: data.cover_image || '',
+        };
+      } catch {
+        continue;
+      }
+    }
+  } catch (error) {
+    console.error('Error reading blog post:', error);
+  }
+
+  return null;
 }
 
 export default function BlogPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [slug, setSlug] = useState('');
-
-  useEffect(() => {
-    params.then((p) => {
-      setSlug(p.slug);
-    });
-  }, [params]);
-
-  useEffect(() => {
-    if (!slug) return;
-
-    const fetchPost = async () => {
-      try {
-        const response = await fetch(`/api/blog/posts/${slug}`, { cache: 'no-store' });
-        const data = await response.json();
-
-        if (!response.ok) {
-          setError(data.error || 'Failed to fetch post');
-          return;
-        }
-
-        setPost(data.post);
-      } catch (err) {
-        setError('An error occurred while fetching the post');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPost();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className={styles.container}>
-        <Card title="LOADING...">
-          <BarLoader />
-        </Card>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.container}>
-        <Card title="ERROR">
-          <AlertBanner>{error}</AlertBanner>
-          <Link href="/blog" className={styles.backLink}>
-            ← Back to Blog
-          </Link>
-        </Card>
-      </div>
-    );
-  }
+  const post = getBlogPost(params.slug);
 
   if (!post) {
     return (
       <div className={styles.container}>
         <Card title="NOT FOUND">
           <AlertBanner>Post not found</AlertBanner>
-          <Link href="/blog" className={styles.backLink}>
+          <Link href="/blog/" className={styles.backLink}>
             ← Back to Blog
           </Link>
         </Card>
@@ -104,8 +104,8 @@ export default function BlogPostPage({
         title={post.title}
         slug={post.slug}
         author={post.author}
-        created_at={post.created_at}
-        updated_at={post.updated_at}
+        created_at={post.date}
+        updated_at={post.date}
         tags={post.tags}
         cover_image={post.cover_image}
         content={post.content}

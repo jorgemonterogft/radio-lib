@@ -2,6 +2,8 @@ import Package from '@root/package.json';
 
 import { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     background_color: '#000000',
