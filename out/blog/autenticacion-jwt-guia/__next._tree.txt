@@ -1,4 +1,0 @@
-:HL["/_next/static/chunks/6a079a2f67272483.css","style"]
-:HL["/_next/static/chunks/93b6e42009a426d2.css","style"]
-:HL["/_next/static/chunks/cd7f2c0c75db08c9.css","style"]
-0:{"buildId":"tC-mrF5Mw8PW1dce7cOJ8","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"blog","paramType":null,"paramKey":"blog","hasRuntimePrefetch":false,"slots":{"children":{"name":"slug","paramType":"d","paramKey":"autenticacion-jwt-guia","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

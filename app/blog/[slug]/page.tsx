@@ -2,9 +2,9 @@ import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import Link from 'next/link';
 import matter from 'gray-matter';
-import Card from '@/components/Card';
-import AlertBanner from '@/components/AlertBanner';
-import BlogPost from '@/components/BlogPost';
+import Card from '@components/Card';
+import AlertBanner from '@components/AlertBanner';
+import BlogPost from '@components/BlogPost';
 import styles from './post.module.css';
 
 interface BlogPostData {
@@ -29,7 +29,7 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 
     categories.forEach((category) => {
       const categoryPath = join(postsDirectory, category);
-      const files = readdirSync(categoryPath).filter(file => file.endsWith('.md'));
+      const files = readdirSync(categoryPath).filter(file => file.endsWith('.md') && !file.startsWith('_'));
 
       files.forEach((file) => {
         const slug = file.replace('.md', '');

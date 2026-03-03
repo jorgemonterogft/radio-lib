@@ -27,7 +27,7 @@ function getBlogPosts(): BlogPost[] {
 
     categories.forEach((category) => {
       const categoryPath = join(postsDirectory, category);
-      const files = readdirSync(categoryPath).filter(file => file.endsWith('.md'));
+      const files = readdirSync(categoryPath).filter(file => file.endsWith('.md') && !file.startsWith('_'));
 
       files.forEach((file) => {
         const filePath = join(categoryPath, file);

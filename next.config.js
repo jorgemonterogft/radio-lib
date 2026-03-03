@@ -1,7 +1,7 @@
 const nextConfig = {
   devIndicators: false,
-  output: 'standalone',
-  basePath: '',
+  output: 'export',
+  basePath: '/radio-lib',
   trailingSlash: true,
   images: {
     unoptimized: true,
