@@ -1,6 +1,6 @@
 {
-  "name": "srcl",
-  "description": "SRCL is an open-source React component and style repository that helps you build web applications, desktop applications, and static websites with terminal aesthetics.",
+  "name": "radio-lib",
+  "description": "Radio-Lib — A terminal-inspired blog and web application built with Sacred Design System.",
   "engines": {
     "node": ">=18"
   },
@@ -15,8 +15,6 @@
   "dependencies": {
     "@notionhq/client": "^3.0.0",
     "@octokit/rest": "^22.0.1",
-    "@uiw/react-markdown-editor": "^6.1.4",
-    "@uiw/react-markdown-preview": "^5.1.5",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
     "gray-matter": "^4.0.3",

@@ -6,8 +6,8 @@ import Header from '@components/Header';
 import Footer from '@components/Footer';
 
 export const metadata = {
-  title: 'Radio',
-  description: 'Radio - A blog about technology',
+  title: 'Radio-Lib',
+  description: 'Radio-Lib — A terminal-inspired blog built with Sacred Design System',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

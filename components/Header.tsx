@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <h1 className={styles.title}>RADIO</h1>
+        <h1 className={styles.title}>RADIO-LIB</h1>
       </div>
     </header>
   );

@@ -1,18 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-import Card from '@/components/Card';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import AlertBanner from '@/components/AlertBanner';
-import styles from './PostEditor.module.css';
-
-// Dynamically import MDEditor to avoid SSR issues
-const MDEditor = dynamic(() => import('@uiw/react-markdown-editor').then(mod => mod.default), {
-  ssr: false,
-  loading: () => <textarea className={styles.fallbackTextarea} placeholder="Enter markdown content..." />,
-});
+import { useState } from 'react';
+import Card from '@components/Card';
+import Button from '@components/Button';
+import Input from '@components/Input';
+import TextArea from '@components/TextArea';
+import AlertBanner from '@components/AlertBanner';
+import styles from '@components/PostEditor.module.css';
 
 interface PostFormData {
   title: string;
@@ -40,20 +34,14 @@ export default function PostEditor() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.currentTarget;
     setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
 
-    // Auto-generate slug from title
     if (name === 'title') {
       setFormData(prev => ({
         ...prev,
@@ -66,10 +54,10 @@ export default function PostEditor() {
     }
   };
 
-  const handleContentChange = (val: string) => {
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFormData(prev => ({
       ...prev,
-      content: val,
+      content: e.currentTarget.value,
     }));
   };
 
@@ -127,121 +115,36 @@ export default function PostEditor() {
     }
   };
 
-  if (!mounted) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className={styles.container}>
-      <Card title="CREATE POST">
-        <form onSubmit={handleSubmit} className={styles.form}>
-          {error && <AlertBanner>{error}</AlertBanner>}
-          {message && <AlertBanner>{message}</AlertBanner>}
+    <Card title="CREATE POST">
+      <form className={styles.root} onSubmit={handleSubmit}>
+        <p className={styles.description}>Write and publish a new blog post. The slug is auto-generated from the title.</p>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="title">Title *</label>
-            <Input
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              placeholder="Post title"
-              required
-            />
-          </div>
+        {error && <AlertBanner>{error}</AlertBanner>}
+        {message && <AlertBanner>{message}</AlertBanner>}
 
-          <div className={styles.formGroup}>
-            <label htmlFor="slug">Slug *</label>
-            <Input
-              id="slug"
-              name="slug"
-              value={formData.slug}
-              onChange={handleInputChange}
-              placeholder="post-slug"
-              required
-            />
-            <small>Auto-generated from title</small>
-          </div>
+        <div className={styles.section}>
+          <Input autoComplete="off" label="TITLE" placeholder="Post title" name="title" value={formData.title} onChange={handleInputChange} required />
+          <Input autoComplete="off" label="SLUG" placeholder="auto-generated-from-title" name="slug" value={formData.slug} onChange={handleInputChange} required />
+          <Input autoComplete="off" label="EXCERPT" placeholder="Brief summary of the post" name="excerpt" value={formData.excerpt} onChange={handleInputChange} />
+          <Input autoComplete="off" label="AUTHOR" placeholder="Your name" name="author" value={formData.author} onChange={handleInputChange} />
+          <Input autoComplete="off" label="DATE" placeholder="YYYY-MM-DD" name="date" value={formData.date} onChange={handleInputChange} />
+          <Input autoComplete="off" label="TAGS" placeholder="javascript, react, nextjs (comma-separated)" name="tags" value={formData.tags} onChange={handleInputChange} />
+          <Input autoComplete="off" label="COVER IMAGE URL" placeholder="https://example.com/image.jpg" name="cover_image" value={formData.cover_image} onChange={handleInputChange} />
+        </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="excerpt">Excerpt</label>
-            <Input
-              id="excerpt"
-              name="excerpt"
-              value={formData.excerpt}
-              onChange={handleInputChange}
-              placeholder="Brief summary of the post"
-            />
-          </div>
+        <div className={styles.section}>
+          <p className={styles.label}>CONTENT (MARKDOWN)</p>
+          <TextArea placeholder="Write your content in Markdown..." name="content" value={formData.content} onChange={handleContentChange} required />
+        </div>
 
-          <div className={styles.row}>
-            <div className={styles.formGroup}>
-              <label htmlFor="author">Author</label>
-              <Input
-                id="author"
-                name="author"
-                value={formData.author}
-                onChange={handleInputChange}
-                placeholder="Your name"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="date">Date</label>
-              <Input
-                id="date"
-                name="date"
-                type="date"
-                value={formData.date}
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="tags">Tags (comma-separated)</label>
-            <Input
-              id="tags"
-              name="tags"
-              value={formData.tags}
-              onChange={handleInputChange}
-              placeholder="javascript, react, nextjs"
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="cover_image">Cover Image URL</label>
-            <Input
-              id="cover_image"
-              name="cover_image"
-              value={formData.cover_image}
-              onChange={handleInputChange}
-              placeholder="https://example.com/image.jpg"
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="content">Content (Markdown) *</label>
-            <div className={styles.editorWrapper}>
-              <MDEditor
-                value={formData.content}
-                onChange={(val) => handleContentChange(val || '')}
-                height={'400px' as any}
-              />
-            </div>
-          </div>
-
-          <div className={styles.actions}>
-            <Button
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? 'Creating...' : 'Create Post'}
-            </Button>
-          </div>
-        </form>
-      </Card>
-    </div>
+        <div className={styles.actions}>
+          <Button type="submit" disabled={loading} style={{ width: '100%' }}>
+            {loading ? 'Creating post...' : 'Create Post'}
+          </Button>
+        </div>
+      </form>
+    </Card>
   );
 }
 

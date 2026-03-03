@@ -38,7 +38,7 @@ export default function BlogPost({ title, slug, author, created_at, updated_at, 
     <CardDouble title={title.toUpperCase()}>
       <BreadCrumbs
         items={[
-          { name: 'Sacred', url: '/' },
+          { name: 'Radio-Lib', url: '/' },
           { name: 'Blog', url: '/blog' },
           { name: title },
         ]}

@@ -1,95 +1,43 @@
-.container {
-  padding: 2rem 1rem;
-  max-width: 1000px;
-  margin: 0 auto;
+.root {
+  display: block;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.description {
+  margin: 12px 0 16px 0;
+  line-height: 1.6;
 }
 
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.section {
+  margin: 12px 0;
 }
 
-.formGroup label {
-  font-family: 'Courier New', monospace;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #fff;
+.label {
+  font-size: var(--font-size);
+  font-weight: 400;
   text-transform: uppercase;
+  margin: 0 0 8px 0;
 }
 
-.formGroup small {
-  font-size: 0.75rem;
-  color: #999;
-  font-style: italic;
+.inlineMessage {
+  margin: 8px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-background);
+  font-size: 14px;
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+.error {
+  border-color: var(--color-red-60);
+  color: var(--color-red-60);
+  background: var(--color-red-10);
 }
 
-@media (max-width: 640px) {
-  .row {
-    grid-template-columns: 1fr;
-  }
-}
-
-.editorWrapper {
-  border: 1px solid #333;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #0a0a0a;
-}
-
-.fallbackTextarea {
-  width: 100%;
-  min-height: 400px;
-  background: #0a0a0a;
-  color: #fff;
-  border: 1px solid #333;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.875rem;
-  padding: 1rem;
-  resize: vertical;
-}
-
-.editorWrapper :global(.w-md-editor) {
-  background: #0a0a0a;
-  border: none;
-}
-
-.editorWrapper :global(.w-md-editor-text-input),
-.editorWrapper :global(.w-md-editor-preview) {
-  background: #0a0a0a;
-  color: #fff;
-  font-family: 'Courier New', monospace;
-  padding: 1rem;
-}
-
-.editorWrapper :global(.w-md-editor-toolbar) {
-  background: #1a1a1a;
-  border-bottom: 1px solid #333;
-}
-
-.editorWrapper :global(.w-md-editor-toolbar button) {
-  color: #fff;
-}
-
-.editorWrapper :global(.w-md-editor-toolbar button:hover) {
-  background: #333;
+.success {
+  border-color: var(--theme-focused-foreground);
+  color: var(--theme-text);
+  background: var(--theme-focused-foreground-subdued);
 }
 
 .actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 16px;
 }

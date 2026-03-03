@@ -1,7 +1,8 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
-import Card from '@/components/Card';
-import BlogPostCard from '@/components/BlogPostCard';
+import Card from '@components/Card';
+import BlogPostCard from '@components/BlogPostCard';
+import AlertBanner from '@components/AlertBanner';
 import matter from 'gray-matter';
 
 interface BlogPost {
@@ -62,9 +63,7 @@ export default function BlogPage() {
   return (
     <Card title="BLOG">
         {posts.length === 0 && (
-          <div style={{ padding: '1rem' }}>
-            No posts found.
-          </div>
+          <AlertBanner>No posts found.</AlertBanner>
         )}
 
         {posts.length > 0 &&
